@@ -1,0 +1,1 @@
+image: vkunal/demos:go-api-{{IMAGE_TAG}}

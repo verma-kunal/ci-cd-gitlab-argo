@@ -84,7 +84,7 @@ update_manifest:
     - git config --global user.email "vkunal321@gmail.com"
     - git config --global user.name "verma-kunal"
   script:
-    - git clone git@gitlab.com:devops-projects6943118/ci-cd/${CI_PROJECT_PATH}.git
+    - git clone git@gitlab.com:devops-projects6943118/ci-cd/go-rest-api.git
     - cd ${CI_PROJECT_NAME}
     - sed -i "s/ImageTag/${COMMIT_SHA}/g" deployment/deployment.yml
     - git add $CI_PROJECT_DIR/deployment/deployment.yml

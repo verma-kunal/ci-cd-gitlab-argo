@@ -85,7 +85,7 @@ update_manifest:
     - git config --global user.name "verma-kunal"
   script:
     - git clone git@gitlab.com:devops-projects6943118/ci-cd/go-rest-api.git
-    - sed -i "s/ImageTag/${COMMIT_SHA}/g" deployment/deployment.yml
+    - sed -e "s/{{IMAGE_TAG}}/${CI_COMMIT_SHORT_SHA}/g" /deployment/deployment.yml.template > /deployment/deployment.yml
     - cat deployment/deployment.yml
     # - git add ./deployment/deployment.yml
     # - git commit -m "Update deployment image to version ${COMMIT_SHA}"

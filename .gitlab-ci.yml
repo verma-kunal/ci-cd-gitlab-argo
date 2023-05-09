@@ -1,0 +1,91 @@
+workflow:
+  name: 'Pipeline for branch: $CI_COMMIT_BRANCH'
+  rules:
+    - if: $CI_COMMIT_TITLE =~ /-draft$/ 
+      when: never
+    - if: $CI_PIPELINE_SOURCE == "push"
+
+stages:
+  # - build
+  # - test
+  # - code_quality
+  - image_build
+  - update_k8s_manifest
+
+# code_build:
+#   stage: build
+#   image:
+#     name: golang:1.20.3-bullseye
+#   before_script:
+#     - echo "Installing make command:"
+#     - apt-get update && apt-get install make
+#   script:
+#     - echo "Running tests"
+#     - make build
+
+# run_tests:
+#   stage: test
+#   image: 
+#     name: golang:1.20.3-bullseye
+#   before_script:
+#     - echo "Installing make command:"
+#     - apt-get update && apt-get install make
+#   script:
+#     - echo "Running tests"
+#     - make test
+
+# sonarqube-check:
+#   stage: code_quality
+#   image: 
+#     name: sonarsource/sonar-scanner-cli:latest
+#     entrypoint: [""]
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # cache location
+#     GIT_DEPTH: "0"  # fetch all branches
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#   script: 
+#     - sonar-scanner
+#   allow_failure: true
+#   only:
+#     - main
+
+build_image:
+  stage: image_build
+  image:
+    name: docker:24.0.0-rc.1-cli # Docker in Docker (client)
+  services: # linked with the Dind container
+    - docker:24.0.0-rc.1-dind # Docker Daemon
+  variables: # for communication b/w docker client & daemon
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - echo "Logging in to DockerHub"
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+  script:
+    - docker build -t vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA .
+    - docker push vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA
+
+update_manifest:
+  stage: update_k8s_manifest
+  image:
+    name: ubuntu:22.04
+  variables:
+    COMMIT_SHA: "$CI_COMMIT_SHORT_SHA"
+  before_script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client git -y )'
+    - eval $(ssh-agent -s)
+    - echo "$SSH_PRIVATE_KEY" | tr -d '\r' | ssh-add - > /dev/null
+    - mkdir -p ~/.ssh
+    - chmod 700 ~/.ssh
+    - echo "$SSH_KNOWN_HOSTS" >> ~/.ssh/known_hosts
+    - chmod 644 ~/.ssh/known_hosts
+    - git config --global user.email "vkunal321@gmail.com"
+    - git config --global user.name "verma-kunal"
+  script:
+    - git clone git@gitlab.com:devops-projects6943118/go-rest-api.git
+    - sed -i "s/ImageTag/${COMMIT_SHA}/g" $CI_PROJECT_DIR/deployment/deployment.yml
+    - git add $CI_PROJECT_DIR/deployment/deployment.yml
+    - git commit -m "Update deployment image to version ${COMMIT_SHA}"
+    - git push git@gitlab.com:devops-projects6943118/go-rest-api.git HEAD:main

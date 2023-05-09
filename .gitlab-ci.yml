@@ -5,12 +5,12 @@ workflow:
       when: never
     - if: $CI_COMMIT_TITLE =~ /-ci$/
 
-stages:
+# stages:
   # - build
   # - test
   # - code_quality
-  - image_build
-  - update_k8s_manifest
+  # - image_build
+  # - update_k8s_manifest
 
 # code_build:
 #   stage: build
@@ -52,23 +52,23 @@ stages:
 #   only:
 #     - main
 
-build_image:
-  stage: image_build
-  image:
-    name: docker:24.0.0-rc.1-cli # Docker in Docker (client)
-  services: # linked with the Dind container
-    - docker:24.0.0-rc.1-dind # Docker Daemon
-  variables: # for communication b/w docker client & daemon
-    DOCKER_TLS_CERTDIR: "/certs"
-  before_script:
-    - echo "Logging in to DockerHub"
-    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-  script:
-    - docker build -t vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA .
-    - docker push vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA
+# build_image:
+#   stage: image_build
+#   image:
+#     name: docker:24.0.0-rc.1-cli # Docker in Docker (client)
+#   services: # linked with the Dind container
+#     - docker:24.0.0-rc.1-dind # Docker Daemon
+#   variables: # for communication b/w docker client & daemon
+#     DOCKER_TLS_CERTDIR: "/certs"
+#   before_script:
+#     - echo "Logging in to DockerHub"
+#     - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+#   script:
+#     - docker build -t vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA .
+#     - docker push vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA
 
 update_manifest:
-  stage: update_k8s_manifest
+  # stage: update_k8s_manifest
   image:
     name: ubuntu:22.04
   variables:

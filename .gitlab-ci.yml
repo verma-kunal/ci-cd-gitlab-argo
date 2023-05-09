@@ -5,12 +5,12 @@ workflow:
       when: never
     - if: $CI_COMMIT_TITLE =~ /-ci$/
 
-# stages:
+stages:
   # - build
   # - test
   # - code_quality
-  # - image_build
-  # - update_k8s_manifest
+  - image_build
+  - update_k8s_manifest
 
 # code_build:
 #   stage: build
@@ -52,23 +52,23 @@ workflow:
 #   only:
 #     - main
 
-# build_image:
-#   stage: image_build
-#   image:
-#     name: docker:24.0.0-rc.1-cli # Docker in Docker (client)
-#   services: # linked with the Dind container
-#     - docker:24.0.0-rc.1-dind # Docker Daemon
-#   variables: # for communication b/w docker client & daemon
-#     DOCKER_TLS_CERTDIR: "/certs"
-#   before_script:
-#     - echo "Logging in to DockerHub"
-#     - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
-#   script:
-#     - docker build -t vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA .
-#     - docker push vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA
+build_image:
+  stage: image_build
+  image:
+    name: docker:24.0.0-rc.1-cli # Docker in Docker (client)
+  services: # linked with the Dind container
+    - docker:24.0.0-rc.1-dind # Docker Daemon
+  variables: # for communication b/w docker client & daemon
+    DOCKER_TLS_CERTDIR: "/certs"
+  before_script:
+    - echo "Logging in to DockerHub"
+    - docker login -u $DOCKERHUB_USER -p $DOCKERHUB_PASS
+  script:
+    - docker build -t vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA .
+    - docker push vkunal/demos:go-api-$CI_COMMIT_SHORT_SHA
 
 update_manifest:
-  # stage: update_k8s_manifest
+  stage: update_k8s_manifest
   image:
     name: ubuntu:22.04
   variables:
@@ -86,7 +86,6 @@ update_manifest:
   script:
     - git clone git@gitlab.com:devops-projects6943118/ci-cd/go-rest-api.git
     - sed -i "s/{{IMAGE_TAG}}/${COMMIT_SHA}/g" deployment/deployment.yml
-    - cat deployment/deployment.yml
-    # - git add deployment/deployment.yml
-    # - git commit -m "Update deployment image to version ${COMMIT_SHA}"
-    # - git push --force git@gitlab.com:devops-projects6943118/ci-cd/go-rest-api.git HEAD:main
+    - git add deployment/deployment.yml
+    - git commit -m "Update deployment image to version ${COMMIT_SHA}"
+    - git push --force git@gitlab.com:devops-projects6943118/ci-cd/go-rest-api.git HEAD:main

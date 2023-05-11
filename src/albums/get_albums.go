@@ -3,7 +3,7 @@ package albums
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
-	"gitlab.com/devops-projects6943118/go-rest-api/src"
+	"gitlab.com/devops-projects6943118/ci-cd/go-rest-api/src"
 )
 
 // get list of albums:

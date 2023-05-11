@@ -8,8 +8,8 @@ import (
 	"testing"
 	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/assert"
-	"gitlab.com/devops-projects6943118/go-rest-api/src"
-	"gitlab.com/devops-projects6943118/go-rest-api/src/albums"
+	"gitlab.com/devops-projects6943118/ci-cd/go-rest-api/src"
+	"gitlab.com/devops-projects6943118/ci-cd/go-rest-api/src/albums"
 )
 
 // For getting the list of albums:

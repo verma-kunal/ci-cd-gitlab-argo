@@ -1,6 +1,6 @@
 # Go REST API with GitLab CI and Argo CD
 
-![](https://hackmd.io/_uploads/Skk3tui4n.png)
+![](./images/illustration.png)
 
 ## Introduction 
 This project is a simple **Go-based RESTful API** built with the [Gin Web Framework](https://gin-gonic.com/docs/quickstart/).
@@ -70,7 +70,7 @@ To get started with this project, follow these steps:
 
 - You can now access the app at: http://localhost:3000/albums
 
-![](https://hackmd.io/_uploads/HyXpjSsVh.png)
+![](./images/curl.png)
 - To add am item to the list:
 
     ```
@@ -165,7 +165,7 @@ A few important points for configuring Argo CD:
     ```
 3. Monitor the deployment status and access the application once it's successfully deployed.
 
-    ![](https://hackmd.io/_uploads/rJdDf8oEh.png)
+    ![](./images/argo.png)
 
 📍 To learn more about Argo CD and configure it in your cluster, refer the [documentation](https://argo-cd.readthedocs.io/en/stable/getting_started/).
 

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: go-rest-api
-          image: vkunal/demos:go-api-{{IMAGE_TAG}}
+          image: vkunal/demos:go-api-9d941589
           ports:
           - containerPort: 3000
           resources:

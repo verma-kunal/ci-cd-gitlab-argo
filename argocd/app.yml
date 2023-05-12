@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: go-rest-api
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.com/devops-projects6943118/ci-cd/go-rest-api.git
+    targetRevision: HEAD
+    path: deployment
+  destination:
+    server: https://kubernetes.docker.internal:6443 # K8s on Docker Desktop
+    namespace: go-app
+  syncPolicy:
+    automated:
+      selfHeal: true

@@ -3,54 +3,56 @@ workflow:
   rules:
     - if: $CI_COMMIT_TITLE =~ /-draft$/ 
       when: never
+    - if: $CI_COMMIT_TITLE =~ /-test$/ 
+      when: never
     - if: $CI_COMMIT_TITLE =~ /-ci$/
 
 stages:
-  # - build
-  # - test
-  # - code_quality
+  - build
+  - test
+  - code_quality
   - image_build
   - update_k8s_manifest
 
-# code_build:
-#   stage: build
-#   image:
-#     name: golang:1.20.3-bullseye
-#   before_script:
-#     - echo "Installing make command:"
-#     - apt-get update && apt-get install make
-#   script:
-#     - echo "Running tests"
-#     - make build
+code_build:
+  stage: build
+  image:
+    name: golang:1.20.3-bullseye
+  before_script:
+    - echo "Installing make command:"
+    - apt-get update && apt-get install make
+  script:
+    - echo "Running tests"
+    - make build
 
-# run_tests:
-#   stage: test
-#   image: 
-#     name: golang:1.20.3-bullseye
-#   before_script:
-#     - echo "Installing make command:"
-#     - apt-get update && apt-get install make
-#   script:
-#     - echo "Running tests"
-#     - make test
+run_tests:
+  stage: test
+  image: 
+    name: golang:1.20.3-bullseye
+  before_script:
+    - echo "Installing make command:"
+    - apt-get update && apt-get install make
+  script:
+    - echo "Running tests"
+    - make test
 
-# sonarqube-check:
-#   stage: code_quality
-#   image: 
-#     name: sonarsource/sonar-scanner-cli:latest
-#     entrypoint: [""]
-#   variables:
-#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # cache location
-#     GIT_DEPTH: "0"  # fetch all branches
-#   cache:
-#     key: "${CI_JOB_NAME}"
-#     paths:
-#       - .sonar/cache
-#   script: 
-#     - sonar-scanner
-#   allow_failure: true
-#   only:
-#     - main
+sonarqube-check:
+  stage: code_quality
+  image: 
+    name: sonarsource/sonar-scanner-cli:latest
+    entrypoint: [""]
+  variables:
+    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # cache location
+    GIT_DEPTH: "0"  # fetch all branches
+  cache:
+    key: "${CI_JOB_NAME}"
+    paths:
+      - .sonar/cache
+  script: 
+    - sonar-scanner
+  allow_failure: true
+  only:
+    - main
 
 build_image:
   stage: image_build

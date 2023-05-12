@@ -1,4 +1,4 @@
-package src 
+package src
 
 // album struct:
 type Album struct {
@@ -23,6 +23,15 @@ var Albums = []Album{
 		Price:  17.99,
 	},
 	{
-		ID: "3", Title: "Sarah Vaughan and Clifford Brown", Artist: "Sarah Vaughan", Price: 39.99,
+		ID: "3", 
+		Title: "Sarah Vaughan and Clifford Brown", 
+		Artist: "Sarah Vaughan", 
+		Price: 39.99,
+	},
+	{
+		ID: "4", 
+		Title: "The Happy Hours", 
+		Artist: "Kunal Verma", 
+		Price: 10.00,
 	},
 }

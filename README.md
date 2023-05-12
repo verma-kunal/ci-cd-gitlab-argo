@@ -70,7 +70,7 @@ To get started with this project, follow these steps:
 
 - You can now access the app at: http://localhost:3000/albums
 
-![](./images/curl.png)
+    ![](./images/curl.png)
 - To add am item to the list:
 
     ```

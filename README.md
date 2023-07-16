@@ -1,11 +1,14 @@
-# Go REST API with GitLab CI and Argo CD
+# CI/CD with GitLab CI and Argo CD
+> **📍 NOTE:**
+> 
+> This project has originally been implemented on GitLab, as it's specifically focused towards using the GitLab CI.
+> [GitLab repo link](https://gitlab.com/devops-projects6943118/ci-cd/go-rest-api)
 
 ![](./images/illustration.png)
 
 ## Introduction 
-This project is a simple **Go-based RESTful API** built with the [Gin Web Framework](https://gin-gonic.com/docs/quickstart/).
 
-This project also has an implementation that demonstrates **Continuous Integration and Continuous Deployment (CI/CD)**. It provides a comprehensive example of **building**, **testing**, and **deploying** a Go application using **GitLab CI** and **Argo CD**.
+This project is an implementation of **Continuous Integration and Continuous Deployment (CI/CD)** on a simple [Go-REST-API](https://github.com/verma-kunal/Go-REST-API) application. It provides a comprehensive example of **building**, **testing**, and **deploying** a Go application using **GitLab CI** and **Argo CD**.
 
 ## Features
 
@@ -33,53 +36,7 @@ Before getting started with this project, ensure you have the following dependen
 
 ### Setup the Project
 
-To get started with this project, follow these steps:
-
-1. **Clone the repository:**
-    ```
-    git clone https://gitlab.com/devops-projects6943118/ci-cd/go-rest-api.git
-    ```
-
-2. **Change into the project directory:**
-    ```
-    cd go-rest-api
-    ```
-
-3. **Install the dependencies:**
-    ```
-    go mod download
-    ```
-4. **Run the application:**
-
-    - **Option 1: Run locally**
-        ```
-        go run main.go
-        ```
-    - **Option 2: Run with Docker**
-
-        1. Build the image locally:
-
-            ```
-            docker build -t go-app .
-            ```
-        2. Run the docker container
-
-            ```
-            docker run -dp 3000:3000 go-app
-            ```
-
-- You can now access the app at: http://localhost:3000/albums
-
-    ![](./images/curl.png)
-- To add am item to the list:
-
-    ```
-    curl http://localhost:3000/albums \
-    --include \
-    --header "Content-Type: application/json" \
-    --request "POST" \
-    --data '{"id": "5","title": "The Modern Sound of Betty Carter","artist": "Betty Carter","price": 49.99}'
-    ```
+Please follow the instructions given in the [README](https://github.com/verma-kunal/Go-REST-API), to set up the **GO-REST-API application** correctly.
 
 ## Overview of CI/CD Workflow
 
